@@ -2,7 +2,9 @@
 
 # AgentBridge AI 軟體公司
 
-[English](README.en.md) · [Windows 下載](https://github.com/infycat/AgentBridge/releases/latest) · [所有版本](https://github.com/infycat/AgentBridge/releases)
+[English](README.en.md) · [最新 Release](https://github.com/infycat/AgentBridge/releases/latest) · [所有版本](https://github.com/infycat/AgentBridge/releases)
+
+**[下載 AgentBridge v0.1.0（Windows x64 ZIP）](https://github.com/infycat/AgentBridge/releases/download/v0.1.0/AgentBridge-v0.1.0-windows-x64.zip)**
 
 在同一台 Windows 電腦上，讓 Codex 和 Google Antigravity 共用工位、工單、階段路線圖與聊天記錄。桌面程式內建聊天視窗，員工使用本機 MCP 回報進度、認領工單或協調檔案修改。
 

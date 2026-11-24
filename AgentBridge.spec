@@ -40,7 +40,9 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    # The desktop uses QWidget and WebEngineWidgets. Skip the Python QML
+    # integration and its optional plugins; native Qt DLL dependencies remain.
+    excludes=['PySide6.QtQml', 'PySide6.QtQuick', 'PySide6.QtQuickWidgets'],
     noarchive=False,
     optimize=0,
 )

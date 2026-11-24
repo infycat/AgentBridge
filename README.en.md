@@ -2,7 +2,9 @@
 
 # AgentBridge
 
-[繁體中文](README.md) · [Windows download](https://github.com/infycat/AgentBridge/releases/latest) · [All releases](https://github.com/infycat/AgentBridge/releases)
+[繁體中文](README.md) · [Latest release](https://github.com/infycat/AgentBridge/releases/latest) · [All releases](https://github.com/infycat/AgentBridge/releases)
+
+**[Download AgentBridge v0.1.0 for Windows x64 (ZIP)](https://github.com/infycat/AgentBridge/releases/download/v0.1.0/AgentBridge-v0.1.0-windows-x64.zip)**
 
 AgentBridge gives Codex and Google Antigravity a shared office on one Windows PC. The desktop app shows workstations, tickets, milestones, and chat. Agents use a local MCP server to coordinate changes, claim work, and report progress.
 
