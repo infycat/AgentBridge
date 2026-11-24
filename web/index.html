@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AgentBridge AI 軟體公司</title>
+  <link rel="icon" type="image/png" href="assets/agentbridge.png" />
+  <link rel="stylesheet" href="assets/app.css?v=brand" />
+  <link rel="stylesheet" href="assets/company.css?v=1" />
+  <link rel="stylesheet" href="assets/roadmap.css?v=1" />
+</head>
+<body>
+<div class="app" id="app">
+  <!-- ========== 左側邊欄 ========== -->
+  <aside class="sidebar">
+    <header class="side-head">
+      <img class="group-avatar" src="assets/agentbridge.png" width="42" height="42" alt="" />
+      <div class="group-meta">
+        <div class="group-title">AgentBridge AI 軟體公司</div>
+        <div class="group-sub"><span class="dot" id="connDot"></span><span id="onlineCount" role="status" aria-atomic="true">連線中…</span></div>
+      </div>
+      <button class="icon-btn" id="themeBtn" title="切換日間／夜間模式">
+        <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </header>
+
+    <nav class="company-nav" aria-label="公司管理">
+      <button type="button" id="workstationsBtn">公司工位</button>
+      <button type="button" id="tasksBtn">工單看板</button>
+    </nav>
+    <div class="side-section-title">員工與工位 <span class="count" id="memberCount">0</span></div>
+    <button type="button" id="olderMembers" class="older-members" aria-controls="memberList" aria-expanded="false" hidden></button>
+    <ul class="member-list" id="memberList"></ul>
+
+    <div class="side-section-title lock-title">
+      <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      即時檔案鎖 <span class="count" id="lockCount">0</span>
+    </div>
+    <ul class="lock-list" id="lockList"></ul>
+  </aside>
+
+  <!-- ========== 中央聊天區 ========== -->
+  <main class="chat">
+    <header class="chat-head">
+      <div class="chat-title">
+        <div class="t1">AgentBridge AI 軟體公司</div>
+        <div class="t2" id="chatSub">公司聊天室</div>
+      </div>
+      <div class="head-tools">
+        <button class="channel-toggle on" id="channelBtn" title="同步通道">
+          <span class="knob"></span><span class="lbl">同步通道 ON</span>
+        </button>
+        <div class="seg" id="filterSeg">
+          <button data-f="all" class="active">全部</button>
+          <button data-f="edit">只看改檔</button>
+          <button data-f="owner">只看老闆指令</button>
+        </div>
+        <label class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="searchInput" placeholder="搜尋訊息" />
+        </label>
+        <button class="icon-btn" id="exportBtn" title="匯出對話為 Markdown">
+          <svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        </button>
+        <button class="icon-btn" id="infoBtn" title="公司資訊">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>
+        </button>
+        <button class="icon-btn danger" id="resetBtn" title="重置會話">
+          <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5"/></svg>
+        </button>
+      </div>
+      <div class="offline-pill hidden" id="offlinePill">
+        <span class="dot off"></span>後端離線
+        <button id="demoBtn">載入展示資料</button>
+      </div>
+    </header>
+
+    <section class="roadmap" aria-label="階段進度">
+      <div class="roadmap-head">
+        <div class="roadmap-heading">
+          <h2 id="roadmapTitle">尚無總目標</h2>
+          <p id="roadmapStatus" role="status"></p>
+        </div>
+        <button class="roadmap-publish" type="button" id="retryGoal" hidden>重試規劃</button>
+        <button class="roadmap-publish" type="button" id="publishGoal"><span aria-hidden="true">🎯</span> 發布目標</button>
+      </div>
+      <ol id="stageStepper" class="stage-stepper" aria-label="依序執行的階段" hidden></ol>
+      <div id="stageDetails" class="stage-details" aria-label="階段工單" hidden></div>
+    </section>
+    <nav class="department-bar" id="departmentBar" aria-label="部門頻道"></nav>
+    <div class="mute-banner hidden" id="muteBanner">
+      🔇 同步通道已關閉 — Agent 之間暫停互相廣播，老闆訊息仍會被記錄
+    </div>
+
+    <section class="messages" id="messages">
+      <div class="empty" id="emptyState">
+        <div class="empty-logo">💬</div>
+        <div>尚無訊息，等待 Agent 到職…</div>
+      </div>
+    </section>
+    <button class="new-msg hidden" id="newMsgBtn">有新訊息 ↓</button>
+
+    <footer class="composer">
+      <div class="target-bar" id="targetBar"></div>
+      <div class="composer-channel" id="composerChannel"></div>
+      <div class="input-row">
+        <div class="mention-pop hidden" id="mentionPop"></div>
+        <textarea id="input" rows="1" placeholder="以老闆身分發送指令…（Enter 發送，Shift+Enter 換行，輸入 @ 指定員工或工位）"></textarea>
+        <button class="send-btn" id="sendBtn" title="發送">
+          <svg viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5 3 10l12 2-12 2z"/></svg>
+        </button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ========== 右側資訊欄（可收合） ========== -->
+  <aside class="info collapsed" id="infoPanel">
+    <header class="info-head">
+      <span id="infoTitle">公司資訊</span>
+      <button class="icon-btn" id="infoClose" title="收合"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </header>
+    <div class="info-body" id="infoBody"></div>
+  </aside>
+</div>
+
+<div class="modal hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="modalCancel">取消</button>
+      <button class="btn danger" id="modalOk">確定</button>
+    </div>
+  </div>
+</div>
+<dialog class="company-panel" id="companyPanel" aria-labelledby="companyTitle">
+  <header>
+    <h2 id="companyTitle"></h2>
+    <button type="button" id="companyClose" class="btn ghost" aria-label="關閉管理面板">關閉</button>
+  </header>
+  <div id="companyFeedback" class="company-feedback" role="status"></div>
+  <div id="companyBody" class="company-body"></div>
+</dialog>
+<dialog class="company-panel goal-dialog" id="goalDialog" aria-labelledby="goalDialogTitle">
+  <header>
+    <h2 id="goalDialogTitle">發布新目標</h2>
+    <button type="button" id="goalClose" class="btn ghost">取消</button>
+  </header>
+  <form class="company-form" id="goalForm">
+    <label>目標標題<input name="title" maxlength="100" required /></label>
+    <label>目標說明<textarea name="description" rows="6" maxlength="2000" placeholder="寫下要達成的結果與驗收條件"></textarea></label>
+    <p id="goalFeedback" role="status"></p>
+    <div class="company-actions">
+      <button class="btn primary" type="submit">發布並交給規劃者</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast hidden" id="toast"></div>
+
+<script src="assets/vendor/markdown-it-15.0.3.min.js"></script>
+<script src="assets/chat-markdown.js?v=1"></script>
+<script src="assets/company.js?v=2"></script>
+<script src="assets/roadmap.js?v=planning-status"></script>
+<script src="assets/app.js?v=workflow-dispatch"></script>
+</body>
+</html>
