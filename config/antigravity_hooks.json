@@ -1,0 +1,23 @@
+{
+  "AgentBridge": {
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "AgentBridgeHook.exe --agent Antigravity --event post-tool-use",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "AgentBridgeHook.exe --agent Antigravity --event pre-invocation",
+        "timeout": 3
+      }
+    ]
+  }
+}

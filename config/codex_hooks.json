@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "AgentBridgeHook.exe --agent Codex --event session-start",
+            "timeout": 3,
+            "statusMessage": "Restoring AgentBridge identity"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "AgentBridgeHook.exe --agent Codex",
+            "timeout": 3,
+            "statusMessage": "Syncing AgentBridge"
+          }
+        ]
+      }
+    ]
+  }
+}

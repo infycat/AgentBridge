@@ -1,0 +1,6 @@
+# Merge this table into ~/.codex/config.toml or the project's trusted .codex/config.toml.
+[mcp_servers.AgentBridge]
+url = "http://127.0.0.1:8765/mcp"
+enabled = true
+startup_timeout_sec = 5
+tool_timeout_sec = 10
