@@ -1,0 +1,9 @@
+# Python 3.11+; mcp 2.x provides MCPServer and Streamable HTTP.
+mcp>=2.2,<3
+uvicorn>=0.34,<1
+websockets>=13
+Pillow>=10.4
+pyinstaller>=6.11; sys_platform == "win32"
+# Qt 6.12 moved the embedded Chromium engine into a separate wheel.
+PySide6-Addons>=6.12,<7
+PySide6-WebEngine>=6.12,<7
