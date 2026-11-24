@@ -46,9 +46,10 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
-# Qt imports the Windows ICU API. Tools on the build PATH can supply a DLL
-# with the same name and different exports, which would shadow the OS DLL.
-a.binaries = [entry for entry in a.binaries if Path(entry[0]).name.lower() != 'icuuc.dll']
+# Use Windows' ICU and native keyboard input. Omit the unrelated virtual
+# keyboard plugin and any ICU DLL found on the build machine's PATH.
+excluded_binaries = {'icuuc.dll', 'qt6virtualkeyboard.dll', 'qtvirtualkeyboardplugin.dll'}
+a.binaries = [entry for entry in a.binaries if Path(entry[0]).name.lower() not in excluded_binaries]
 if platform_name == 'nt' and not any(Path(entry[0]).name.lower() == 'qtwebengineprocess.exe' for entry in a.binaries + a.datas):
     raise SystemExit('QtWebEngineProcess.exe was not collected. AgentBridge requires the embedded chat renderer.')
 pyz = PYZ(a.pure)
